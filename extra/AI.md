@@ -1,3 +1,5 @@
+Sorular dosya eklenerek soruldu ve AI yanıtları bu dosyalardaki kod örnekleri referans alınarak verildi.
+
 ### 1. Güvenlik İmplementasyonu
 **Soru:** PHP'de şifre nasıl güvenli bir şekilde şifrelenir ve saklanır?
 
