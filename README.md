@@ -87,22 +87,15 @@ Modern ve güvenli bir web tabanlı şifre yöneticisi uygulaması. Tüm şifrel
 ## 🗂️ Dosya Yapısı
 
 ```
-pproject/
-├── src/
-│   ├── index.php              # Ana giriş sayfası
-│   ├── dashboard.php          # Ana panel
-│   ├── config.php             # Veritabanı ve güvenlik ayarları
-│   ├── edit_password.php      # Şifre düzenleme işlemi
-│   ├── get_password.php       # Şifre verilerini getirme
-│   ├── logout.php             # Çıkış işlemi
-│   ├── theme_handler.php      # Tema değiştirme
-│   └── database.sql           # Veritabanı şeması
-├── extra/
-│   ├── login.png              # Ana sayfa ekran görüntüsü
-│   ├── dashboard.png          # Dashboard ekran görüntüsü
-│   ├── add-password.png       # Şifre ekleme modal görüntüsü
-│   └── AI.md                  # Yapay zeka ile yapılan sohbetler
-└── README.md                  # Bu dosya
+src/
+├── index.php              # Ana giriş sayfası
+├── dashboard.php          # Ana panel
+├── config.php             # Veritabanı ve güvenlik ayarları
+├── edit_password.php      # Şifre düzenleme işlemi
+├── get_password.php       # Şifre verilerini getirme
+├── logout.php             # Çıkış işlemi
+├── theme_handler.php      # Tema değiştirme
+└── database.sql           # Veritabanı şeması
 ```
 
 ## 🔐 Güvenlik Özellikleri
