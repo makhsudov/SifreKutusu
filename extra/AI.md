@@ -1,33 +1,4 @@
-### 1. Veritabanı Tasarımı
-**Soru:** Şifre yöneticisi için veritabanı şeması nasıl olmalı?
-
-**AI Yanıtı:**
-```sql
--- users tablosu
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- passwords tablosu  
-CREATE TABLE passwords (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    site_name VARCHAR(100) NOT NULL,
-    site_url VARCHAR(255),
-    username VARCHAR(100) NOT NULL,
-    encrypted_password TEXT NOT NULL,
-    tag VARCHAR(50) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-```
-
-### 2. Güvenlik İmplementasyonu
+### 1. Güvenlik İmplementasyonu
 **Soru:** PHP'de şifre nasıl güvenli bir şekilde şifrelenir ve saklanır?
 
 **AI Yanıtı:**
@@ -50,7 +21,7 @@ function decrypt_password($encrypted_password, $key) {
 }
 ```
 
-### 3. JavaScript İnteraktivitesi
+### 2. JavaScript İnteraktivitesi
 **Soru:** Şifre göster/gizle ve panoya kopyalama nasıl yapılır?
 
 **AI Yanıtı:**
@@ -71,7 +42,7 @@ function copyPassword(inputId) {
 }
 ```
 
-### 4. Filtreleme ve Arama
+### 3. Filtreleme ve Arama
 **Soru:** PHP'de dinamik filtreleme ve arama nasıl implement edilir?
 
 **AI Yanıtı:**
@@ -94,7 +65,7 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 ```
 
-### 5. Tema Sistemi
+### 4. Tema Sistemi
 **Soru:** Cookie tabanlı tema sistemi nasıl yapılır?
 
 **AI Yanıtı:**
@@ -117,7 +88,7 @@ function toggleTheme() {
 }
 ```
 
-### 6. Animasyonlu SVG İkon Değişimi
+### 5. Animasyonlu SVG İkon Değişimi
 **Soru:** Header'da sürekli değişen animasyonlu SVG ikonları nasıl yapılır?
 
 **AI Yanıtı:**
