@@ -8,16 +8,21 @@ $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
 // Kayıtlı şifreler için AES şifreleme
 function encrypt_password($password, $key) {
-    $iv = openssl_random_pseudo_bytes(16);
-    $encrypted = openssl_encrypt($password, 'AES-256-CBC', $key, 0, $iv);
-    return base64_encode($iv . $encrypted);
+   $iv = openssl_random_pseudo_bytes(16);
+   $encrypted = openssl_encrypt($password, 'AES-256-CBC', $key, 0, $iv);
+   return base64_encode($iv . $encrypted);
 }
 
 function decrypt_password($encrypted_password, $key) {
-    $data = base64_decode($encrypted_password);
-    $iv = substr($data, 0, 16);
-    $encrypted = substr($data, 16);
-    return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
+   $data = base64_decode($encrypted_password);
+   $iv = substr($data, 0, 16);
+   $encrypted = substr($data, 16);
+   return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
+}
+
+// Kullanıcı anahtarı üret
+function generate_user_key($user_id) {
+   return hash('sha256', 'secret_key_' . $user_id);
 }
 ```
 
@@ -27,18 +32,34 @@ function decrypt_password($encrypted_password, $key) {
 **AI Yanıtı:**
 ```javascript
 function togglePassword(inputId) {
-    const input = document.getElementById(inputId);
-    input.type = input.type === 'password' ? 'text' : 'password';
+   const input = document.getElementById(inputId);
+   input.type = input.type === 'password' ? 'text' : 'password';
 }
 
 function copyPassword(inputId) {
-    const input = document.getElementById(inputId);
-    const tempInput = document.createElement('input');
-    tempInput.value = input.value;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
+   const input = document.getElementById(inputId);
+   const button = event.target.closest('button');
+   const originalSvg = button.innerHTML;
+   
+   // Geçici input oluştur ve kopyala
+   const tempInput = document.createElement('input');
+   tempInput.value = input.value;
+   document.body.appendChild(tempInput);
+   tempInput.select();
+   document.execCommand('copy');
+   document.body.removeChild(tempInput);
+   
+   // Butonu tick işareti ile değiştir
+   button.innerHTML = `
+       <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+       </svg>
+   `;
+   
+   // 2 saniye sonra orijinal ikona geri dön
+   setTimeout(() => {
+       button.innerHTML = originalSvg;
+   }, 2000);
 }
 ```
 
@@ -51,18 +72,44 @@ $sql = "SELECT * FROM passwords WHERE user_id = ?";
 $params = [$user_id];
 
 if (!empty($tag_filter)) {
-    $sql .= " AND tag = ?";
-    $params[] = $tag_filter;
+   $sql .= " AND tag = ?";
+   $params[] = $tag_filter;
 }
 
 if (!empty($search_filter)) {
-    $sql .= " AND (site_name LIKE ? OR username LIKE ?)";
-    $params[] = "%$search_filter%";
-    $params[] = "%$search_filter%";
+   $sql .= " AND (site_name LIKE ? OR username LIKE ?)";
+   $params[] = "%$search_filter%";
+   $params[] = "%$search_filter%";
 }
+
+$sql .= " ORDER BY created_at DESC";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
+
+// JavaScript ile arama
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+   if (e.key === 'Enter') {
+       const url = new URL(window.location);
+       if (this.value.trim()) {
+           url.searchParams.set('search', this.value.trim());
+       } else {
+           url.searchParams.delete('search');
+       }
+       window.location = url;
+   }
+});
+
+// Tag filtreleme
+function filterByTag(tag) {
+   const url = new URL(window.location);
+   if (tag) {
+       url.searchParams.set('tag', tag);
+   } else {
+       url.searchParams.delete('tag');
+   }
+   window.location = url;
+}
 ```
 
 ### 4. Tema Sistemi
@@ -92,6 +139,7 @@ function toggleTheme() {
 **Soru:** Header'da sürekli değişen animasyonlu SVG ikonları nasıl yapılır?
 
 **AI Yanıtı:**
+```javascript
 ```javascript
 document.addEventListener('DOMContentLoaded', function() {
     const iconElement = document.getElementById('rotating-icon');
@@ -129,11 +177,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 ```
 
-```css
-/* CSS transition */
-#rotating-icon {
-    transition: all 0.3s ease-in-out;
-}
+```html
+<!-- HTML'de SVG elementi (Tailwind CSS ile transition) -->
+<svg id="rotating-icon" class="w-6 h-6 text-gray-900 dark:text-white transition-all duration-300 ease-in-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"></path>
+</svg>
 ```
 
 ...ve diğer sorular.
